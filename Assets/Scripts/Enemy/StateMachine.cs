@@ -5,7 +5,6 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
     public AIBaseState activeState;
-    public AIPatrolState patrolState;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,8 +12,7 @@ public class StateMachine : MonoBehaviour
     }
     public void Initialize()
     {
-        patrolState = new AIPatrolState();
-        ChangeState(patrolState);
+        ChangeState(new AIPatrolState());
     }
     // Update is called once per frame
     void Update()

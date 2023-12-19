@@ -13,6 +13,11 @@ public class AIPatrolState : AIBaseState
     public override void Perform()
     {
         PatrolLogic();
+        if (enemy.CanSeePlayer())
+        {
+            Debug.Log(enemy.CanSeePlayer());
+            stateMachine.ChangeState(new AIAttackState());
+        }
     }
     
     public override void Exit()
@@ -21,24 +26,19 @@ public class AIPatrolState : AIBaseState
     }
     public void PatrolLogic()
     {
-        Debug.Log(enemy.Agent.remainingDistance);
-        if (enemy.Agent.remainingDistance < 0.2f)
+        //Debug.Log(enemy.Agent.remainingDistance);
+        if (enemy.Agent.remainingDistance >= 0.2f) return;
+        waitTimer += Time.deltaTime;
+        if (waitTimer <= 2f) return;
+        if (waypointIndex < enemy.path.waypoints.Count - 1)
         {
-            waitTimer += Time.deltaTime;
-            if (waitTimer > 2f)
-            {
-                if (waypointIndex < enemy.path.waypoints.Count - 1)
-                {
-                    waypointIndex++;
-                }
-                else
-                {
-                    waypointIndex = 0;
-                }
-                enemy.Agent.SetDestination(enemy.path.waypoints[waypointIndex].position);
-                waitTimer = 0f;
-            }
-
+            waypointIndex++;
         }
+        else
+        {
+            waypointIndex = 0;
+        }
+        enemy.Agent.SetDestination(enemy.path.waypoints[waypointIndex].position);
+        waitTimer = 0f;
     }
 }
