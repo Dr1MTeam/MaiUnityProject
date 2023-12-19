@@ -4,21 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
+
     private float lerpTimer;
     private float hp;
-    public float maxHP = 100;
     private float mp;
-    public float maxMP = 100;
+    private float durationTimer;
     public float chipSpeed = 2f;
+    [Header("HP bar")]
+    public float maxHP = 100;
     public Image fHPbar;
     public Image bHPbar;
+    [Header("MP bar")]
+    public float maxMP = 100;
     public Image fMPbar;
     public Image bMPbar;
+    [Header("Overlay")]
+    public Image overlay;
+    public float duration;
+    public float fadeSpeed;
+
+
     // Start is called before the first frame update
     void Start()
     {
         hp = maxHP;
         mp = maxMP;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0f);
     }
 
     // Update is called once per frame
@@ -29,11 +40,13 @@ public class PlayerStats : MonoBehaviour
 
         UpdateHPUI();
         UpdateMPUI();
+        DamageOverlay();
 
+        
     }
     public void UpdateHPUI()
     {
-        Debug.Log(hp);
+        
         float fillF = fHPbar.fillAmount;
         float fillB = bHPbar.fillAmount;
         float hFraction = hp / maxHP;
@@ -51,7 +64,6 @@ public class PlayerStats : MonoBehaviour
             bHPbar.fillAmount = hFraction;
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / chipSpeed;
-            percentComplete = percentComplete * percentComplete;
             fHPbar.fillAmount = Mathf.Lerp(fillF, bHPbar.fillAmount, percentComplete);
 
         }
@@ -67,7 +79,6 @@ public class PlayerStats : MonoBehaviour
             bMPbar.color = Color.red;
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / chipSpeed;
-            percentComplete = percentComplete * percentComplete;
             bMPbar.fillAmount = Mathf.Lerp(fillB, hFraction, percentComplete);
         }
         if (fillF < hFraction)
@@ -76,7 +87,6 @@ public class PlayerStats : MonoBehaviour
             bMPbar.fillAmount = hFraction;
             lerpTimer += Time.deltaTime;
             float percentComplete = lerpTimer / chipSpeed;
-            percentComplete = percentComplete * percentComplete;
             fMPbar.fillAmount = Mathf.Lerp(fillF, bMPbar.fillAmount, percentComplete);
 
         }
@@ -85,6 +95,8 @@ public class PlayerStats : MonoBehaviour
     {
         ChangeStat(ref hp, -damage);
         lerpTimer = 0f;
+        durationTimer = 0f;
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0.15f);
     }
     public void RestoreHP(float restore)
     {
@@ -94,5 +106,18 @@ public class PlayerStats : MonoBehaviour
     public void ChangeStat(ref float stat, float delta)
     {
         stat += delta;
+    }
+    public void DamageOverlay()
+    {
+        if (overlay.color.a > 0)
+        {
+            durationTimer += Time.deltaTime;
+            if (durationTimer > duration)
+            {
+                float tempAlpha = overlay.color.a;
+                tempAlpha -= Time.deltaTime * fadeSpeed;
+                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+            }
+        }
     }
 }
