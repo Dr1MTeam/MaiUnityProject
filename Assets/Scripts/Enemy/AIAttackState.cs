@@ -29,7 +29,7 @@ public class AIAttackState : AIBaseState
                 Attack();
             }
 
-            if (moveTimer > Random.Range(0f, 1.5f))
+            if (moveTimer > Random.Range(0f, 1.5f) && (Vector3.Distance(enemy.transform.position, enemy.Player.transform.position) >= 2.5f))
             {
                 //enemy.Agent.SetDestination(enemy.transform.position + (Random.insideUnitSphere * 5));
                 enemy.Agent.SetDestination(enemy.Player.transform.position);
