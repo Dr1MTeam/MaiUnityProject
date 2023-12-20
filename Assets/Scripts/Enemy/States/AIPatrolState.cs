@@ -15,7 +15,7 @@ public class AIPatrolState : AIBaseState
         PatrolLogic();
         if (enemy.CanSeePlayer())
         {
-            Debug.Log(enemy.CanSeePlayer());
+            //Debug.Log(enemy.CanSeePlayer());
             stateMachine.ChangeState(new AIAttackState());
         }
     }

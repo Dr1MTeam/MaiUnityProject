@@ -6,17 +6,22 @@ public class Enemy : MonoBehaviour
 {
     private StateMachine stateMachine;
     private NavMeshAgent agent;
+    private GameObject player;
 
     public NavMeshAgent Agent { get => agent; }
     [SerializeField]
     private string currentState;
     public Path path;
-    [HideInInspector]
-    public GameObject player;
+    
+    public GameObject Player { get => player; }
     [Header("Sight Values")]
     public float sightDistance = 20f;
     public float fov = 90f;
     public float eyeHeight = 2.3f;
+    [Header("Attack")]
+    public Transform AttackZone;
+    [Range(0.1f, 10f)]
+    public float attackRate;
     // Start is called before the first frame update
     void Start()
     {
