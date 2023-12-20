@@ -7,6 +7,10 @@ public class Enemy : MonoBehaviour
     private StateMachine stateMachine;
     private NavMeshAgent agent;
     private GameObject player;
+    private bool isRunning = false;
+    private bool isAttacking = false;
+    private bool isDead = false;
+    private EnemyStats Stats;
 
     public NavMeshAgent Agent { get => agent; }
     [SerializeField]
@@ -22,9 +26,20 @@ public class Enemy : MonoBehaviour
     public Transform AttackZone;
     [Range(0.1f, 10f)]
     public float attackRate;
+
+    [Header("Speed")]
+    public float runSpeed=7f;
+    public float walkSpeed=2.5f;
+    [SerializeField]
+    public bool IsRunning { get => isRunning; }
+    public bool IsAttacking { get => isAttacking; }
+    public bool IsDead { get => isDead; }
+    public bool temp = false;
+
     // Start is called before the first frame update
     void Start()
     {
+        Stats = GetComponent<EnemyStats>();
         stateMachine = GetComponent<StateMachine>();
         agent = GetComponent<NavMeshAgent> ();
         stateMachine.Initialize();
@@ -35,8 +50,20 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(agent.speed);
         CanSeePlayer();
         currentState = stateMachine.activeState.ToString();
+        if (agent.speed > walkSpeed)
+        {
+            isRunning = true;
+            
+        }
+        else isRunning = false;
+        isAttacking = temp;
+        if (isDead)
+        {
+
+        }
     }
     public bool CanSeePlayer()
     {

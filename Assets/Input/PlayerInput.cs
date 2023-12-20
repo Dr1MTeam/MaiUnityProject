@@ -65,7 +65,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Click"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""ab67a5fc-fc64-405d-a941-699969559336"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

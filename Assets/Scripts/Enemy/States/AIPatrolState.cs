@@ -29,7 +29,12 @@ public class AIPatrolState : AIBaseState
         //Debug.Log(enemy.Agent.remainingDistance);
         if (enemy.Agent.remainingDistance >= 0.2f) return;
         waitTimer += Time.deltaTime;
-        if (waitTimer <= 2f) return;
+        if (waitTimer <= 2f)
+        {
+            enemy.Agent.speed = 0;
+            return;
+        }
+        enemy.Agent.speed = enemy.walkSpeed;
         if (waypointIndex < enemy.path.waypoints.Count - 1)
         {
             waypointIndex++;
